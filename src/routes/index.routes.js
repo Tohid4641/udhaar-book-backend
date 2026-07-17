@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
+import authRouter from './auth.routes.js';
 
-const authRouter = require('./auth.routes');
 
 // const { userAuth } = require('../middlewares/auth');
 

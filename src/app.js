@@ -1,15 +1,21 @@
 import express from 'express';
-import dotenv from 'dotenv'; dotenv.config();
-import connectDB from './configs/database';
-import globalErrorHandler from './utils/globalErrorHandler';
+import dotenv from './utils/dotenv.js';
+import connectDB from './configs/database.js';
+import globalErrorHandler from './utils/globalErrorHandler.js';
+import router from './routes/index.routes.js';
+import cookieParser from "cookie-parser";
+import morgan from 'morgan';
 
 const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(morgan('dev'));
 
-app.use('/api/v1', userRouter);
-app.use('/*', (req, res) => {
+app.use('/api/v1', router);
+
+app.use('/*splate', (req, res) => {
     return res.status(404).json({
         success: false,
         message: 'Invalid API call!',
@@ -21,7 +27,7 @@ app.use(globalErrorHandler);
 connectDB()
     .then(() => {
         console.log("Database connected!!");
-        server.listen(port, () =>
+        app.listen(port, () =>
             console.log(
                 `Udhaar Book: backend server is listening on ::: http://localhost:${port}`
             )
